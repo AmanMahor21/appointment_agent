@@ -2,7 +2,7 @@
 from app.prompt import BOOKING_SUCCESS_PROMPT
 from app.state.appointment_state import State
 from app.llm import appointment_agent
-from app.agent.appointment_agent import checkpointer
+from app.config import checkpointer
 # from langgraph.types import asd
 from app.helpers import insert_booking
 from app.helpers import send_msg_to_telegram

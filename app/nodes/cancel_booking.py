@@ -5,7 +5,7 @@ from app.llm import appointment_agent
 # from langgraph.types import asd
 from app.helpers import insert_booking
 from app.helpers import send_msg_to_telegram
-from app.agent.appointment_agent import checkpointer
+from app.config import checkpointer
 import json
 
 
