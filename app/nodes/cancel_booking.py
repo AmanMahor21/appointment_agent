@@ -3,9 +3,9 @@ from app.prompt import CANCEL_BOOKING_PROMPT
 from app.state.appointment_state import State
 from app.llm import appointment_agent
 # from langgraph.types import asd
-from app.config import checkpointer
 from app.helpers import insert_booking
 from app.helpers import send_msg_to_telegram
+from app.agent.appointment_agent import checkpointer
 import json
 
 
