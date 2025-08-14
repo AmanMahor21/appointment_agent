@@ -35,7 +35,8 @@ file_path = os.path.join(base_path, "db", "sql.db")
 
 def get_available_slots(date: str) -> list[str]:
     # print(file_path, 'zxc')
-    date = 2025-0o7-22
+    print(date,'dateee', type(date))
+    # date = 2025-0o7-22
     """Returns available appointment slots for a given date"""
 
     conn = sqlite3.connect(file_path)
@@ -50,6 +51,7 @@ def get_available_slots(date: str) -> list[str]:
         ''', (date,))
 
         rows = cursor.fetchall()
+        print(rows,'zzz')
         booked_slots = {row[0] for row in rows}
 
         # All possible slots (example set)

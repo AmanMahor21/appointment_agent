@@ -1,13 +1,10 @@
-
 from app.prompt import BOOKING_SUCCESS_PROMPT
 from app.state.appointment_state import State
 from app.llm import appointment_agent
-from app.config import checkpointer
-# from langgraph.types import asd
+from app.config import checkpointer  # ✅ Same shared instance
 from app.helpers import insert_booking
 from app.helpers import send_msg_to_telegram
 import json
-
 
 async def execute_booking(state: State) -> State:
     llm = appointment_agent()
@@ -17,10 +14,11 @@ async def execute_booking(state: State) -> State:
         "time": state["appointment_time"],
     }
 
-    # Convert dict to a JSON string
+    # Save booking
     insert_booking(info_dict)
     info_str = json.dumps(info_dict, ensure_ascii=False)
 
+    # Generate booking confirmation text
     extracted = (BOOKING_SUCCESS_PROMPT | llm).invoke({"info": info_str})
 
     if state.get("user_id"):
@@ -29,14 +27,5 @@ async def execute_booking(state: State) -> State:
             body=extracted.content.split("</think>")[-1]
         )
         if res == 200:
-            await checkpointer.delete_thread(state.get("user_id"))
-
-# return {
-#     "user_id": state["user_id"],
-#     "messages": [],
-#     "next_node": "",
-#     "patient_name": "",
-#     "appointment_time": "",
-#     "appointment_date": "",
-#     "last_prompted_for": ""
-# }
+            state.clear()
+    return state

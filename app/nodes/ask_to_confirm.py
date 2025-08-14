@@ -18,8 +18,6 @@ async def ask_to_confirm(state: State) -> State:
             "appointment_date": state["appointment_date"],
             "appointment_time": state["appointment_time"],
         }.items())
-        print(state, 'askkk')
-
         extracted = (ASK_CONFIRM_PROMPT | llm).invoke({"info": info_str})
 
         if state.get("user_id"):
@@ -36,11 +34,8 @@ async def ask_to_confirm(state: State) -> State:
         {"reply": user_reply}).content.strip().lower()
     intent = raw_intent.split("</think>")[-1].strip().lower()
     if intent.lower() == "yes":
-        print(intent, 'underr')
         state["next_node"] = "execute_booking"
-        print("Before return YES branch:", state)
         return state
     else:
-        print("Before return YES branch:", state, 'nott')
         state["next_node"] = "cancel_booking"
         return state

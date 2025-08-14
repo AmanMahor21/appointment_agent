@@ -57,7 +57,6 @@ async def input_validity(state: State) -> State:
                 body=extracted.content.split("</think>")[-1])
         if res == 200:
             return state
-        print("Parsed Output: ask user", extracted)
     except Exception as e:
         print("❌ Failed to parse LLM response")
         raise e

@@ -30,30 +30,24 @@ async def telegram_webhook(req: Request):
     chat_id = data["message"]["chat"]['id']
     question = data['message']['text']
 
-    print(data['message']['text'])
 
     messages = [HumanMessage(content=question)]
-    config = {"configurable": {"thread_id": chat_id}}
+    config = {"configurable": {"thread_id": str(chat_id)}}
 
     state = await graph_app.aget_state(config)
-    print(state, 'sttt')
     if state.interrupts:
 
         await graph_app.aupdate_state(
             config,
             {**state.values, "confirmation_response": question}
         )
-        response = await graph_app.ainvoke(Command(resume={}), config={
-            "configurable": {"thread_id": chat_id}})
-        print(response, 'waitingg')
+        response = await graph_app.ainvoke(Command(resume={}),config=config)
     else:
-        response = await graph_app.ainvoke({"messages": messages, "user_id": chat_id}, config={
-            "configurable": {"thread_id": chat_id}})
+        response = await graph_app.ainvoke({"messages": messages, "user_id": str(chat_id)}, config=config)
         # print(response, 'zzzcc')
 
     if "__interrupt__" in response:
         interrupt_value = response["__interrupt__"][0].value
-        print(f"⏸ Waiting for: {interrupt_value}")
         return {"status": "waiting"}
 
     # Otherwise, send bot's latest response

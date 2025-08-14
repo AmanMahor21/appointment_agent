@@ -28,13 +28,5 @@ async def cancel_booking(state: State) -> State:
             body=extracted.content.split("</think>")[-1]
         )
         if res == 200:
-            await checkpointer.delete_thread(state.get("user_id"))
-            # return {
-            #     "user_id": state["user_id"],
-            #     "messages": [],
-            #     "next_node": "",
-            #     "patient_name": "",
-            #     "appointment_time": "",
-            #     "appointment_date": "",
-            #     "last_prompted_for": ""
-            # }
+             state.clear()
+    return state

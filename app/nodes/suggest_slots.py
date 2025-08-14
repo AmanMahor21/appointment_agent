@@ -22,6 +22,7 @@ async def suggest_slots(state: State):
     slots = get_available_slots(
         date=state.get("appointment_date")
     )
+    print(slots,'slo')
     llm = appointment_agent()
     formatted_prompt = extract_prompt.invoke({"slot": slots})
     llm_res = llm.invoke(formatted_prompt)
